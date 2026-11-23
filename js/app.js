@@ -11,6 +11,7 @@
 
   const STORE_KEY = 'ccdv-sim:session:v2';
   const THEME_KEY = 'ccdv-sim:theme';
+  const BANKS_KEY = 'ccdv-sim:banks:v1'; // question sets imported by the user, kept in this browser only
   const MAX_IMPORT_BYTES = 2 * 1024 * 1024;
   const LETTERS = 'ABCDEFGH';
   const root = document.getElementById('app');
@@ -51,6 +52,36 @@
     const v = Core.validateBank(bank);
     if (v.ok) banks.set(bank.id, bank);
     return v;
+  }
+
+  const imported = new Set(); // ids of banks that came from an import (can be removed)
+
+  function loadImported() {
+    try {
+      const saved = JSON.parse(lsGet(BANKS_KEY) || '{}');
+      Object.values(saved).forEach((b) => { if (registerBank(b).ok) imported.add(b.id); });
+    } catch (e) { /* corrupt data: ignore */ }
+  }
+
+  function saveImported(bank) {
+    let saved = {};
+    try { saved = JSON.parse(lsGet(BANKS_KEY) || '{}') || {}; } catch (e) { /* start fresh */ }
+    saved[bank.id] = bank;
+    lsSet(BANKS_KEY, JSON.stringify(saved));
+    imported.add(bank.id);
+  }
+
+  function removeImported(id) {
+    if (!window.confirm(t('confirmRemoveSet'))) return;
+    let saved = {};
+    try { saved = JSON.parse(lsGet(BANKS_KEY) || '{}') || {}; } catch (e) { /* nothing saved */ }
+    delete saved[id];
+    lsSet(BANKS_KEY, JSON.stringify(saved));
+    imported.delete(id);
+    banks.delete(id);
+    ui.bankId = banks.size ? [...banks.keys()][0] : null;
+    resetForm();
+    render();
   }
 
   function useBank(id) {
@@ -236,6 +267,7 @@
     try { data = JSON.parse(await file.text()); } catch (e) { ui.notice = { kind: 'error', text: t('invalidJson') }; return render(); }
     const v = registerBank(data);
     if (!v.ok) { ui.notice = { kind: 'error', text: t('importFail'), list: v.errors.slice(0, 10) }; return render(); }
+    saveImported(data);
     ui.bankId = data.id;
     ui.view = session && session.finishedAt ? ui.view : 'setup';
     resetForm();
@@ -327,7 +359,8 @@
         h('select', { id: 'bank', class: 'form-select', onchange: (e) => { ui.bankId = e.target.value; resetForm(); render(); } },
           [...banks.values()].map((b) => h('option', { value: b.id, selected: b.id === ui.bankId, text: b.title }))),
         h('p', { class: 'hint', text: [bank.description, t('bankInfo', { n: bank.questions.length, d: bank.domains.length })].filter(Boolean).join('. ') }),
-        h('p', { class: 'hint', text: t('bankHelp') })),
+        h('p', { class: 'hint', text: t('bankHelp') }),
+        imported.has(bank.id) ? btn(t('removeSet'), () => removeImported(bank.id), 'secondary btn-sm mt-2') : null),
 
       group(t('mode'), radio('study', t('modeStudy')), radio('exam', t('modeExam'))),
 
@@ -604,6 +637,7 @@
     const v = registerBank(b);
     if (!v.ok) console.warn('Invalid bundled bank', b && b.id, v.errors);
   });
+  loadImported();
   ui.bankId = banks.size ? [...banks.keys()][0] : null;
   applyTheme(lsGet(THEME_KEY) || 'dark');
   document.documentElement.lang = I18N.getLang();

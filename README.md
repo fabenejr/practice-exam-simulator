@@ -18,7 +18,7 @@ Bring your own question set (a JSON file with questions, answers and explanation
 - Results by domain against a pass target (default 75%), review of every question, "retry wrong and blank".
 - Export results as JSON, print the review.
 - English and Brazilian Portuguese interface, light and dark themes, keyboard shortcuts, screen-reader friendly markup.
-- Progress is saved in your browser (`localStorage`). Nothing is sent anywhere.
+- Progress and imported question sets are saved in your browser (`localStorage`). Nothing is sent anywhere.
 
 ## Quick start
 
