@@ -1,0 +1,17 @@
+# Dependencies and tooling
+node_modules/
+.claude/
+
+# Third-party question banks and personal study files stay local.
+# Never commit questions you do not own or have permission to share.
+private/
+*.private.json
+
+# Local files from before this project was structured as a repo
+simulado_ccdv.html
+estudo_desktop_cli_sdk.html
+
+# OS / editor noise
+.DS_Store
+Thumbs.db
+*.log
