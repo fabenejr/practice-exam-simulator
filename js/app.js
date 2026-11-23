@@ -276,31 +276,42 @@
 
   function renderSetup() {
     const bank = banks.get(ui.bankId);
-    const out = [h('div', { class: 'cover' }, h('h2', { text: t('setupTitle') }), h('p', { class: 'lede', text: t('setupLede') }))];
     const saved = session && !session.finishedAt ? session : null;
+    const side = [h('div', { class: 'cover' }, h('h2', { text: t('setupTitle') }), h('p', { class: 'lede', text: t('setupLede') }))];
 
     if (saved) {
       const sb = banks.get(saved.bankId);
-      out.push(h('section', { class: 'card resume' },
+      side.push(h('section', { class: 'card resume' },
         h('h3', { text: t('resumeTitle') }),
         h('p', { text: t('resumeInfo', { bank: sb ? sb.title : saved.bankId, done: Object.keys(saved.answers).length, total: saved.items.length }) }),
         h('div', { class: 'row' }, btn(t('resume'), resumeSession, 'primary'), btn(t('discard'), discardSession))));
     }
 
-    out.push(importControl());
-    if (!bank) { out.push(h('p', { class: 'muted', text: t('noBank') })); return out; }
+    side.push(importControl());
+    const sideEl = h('div', { class: 'setup-side' }, side);
+    if (!bank) {
+      side.push(h('p', { class: 'muted', text: t('noBank') }));
+      return [h('div', { class: 'setup' }, sideEl)];
+    }
 
     const f = ui.form;
     const radio = (value, label) => h('label', { class: 'check' },
       h('input', { type: 'radio', name: 'mode', value, checked: f.mode === value, onchange: () => { f.mode = value; render(); } }),
       h('span', { text: label }));
+    const check = (key, label) => h('label', { class: 'check' },
+      h('input', { type: 'checkbox', checked: f[key], onchange: (e) => { f[key] = e.target.checked; } }),
+      h('span', { text: label }));
+    const pair = (id, label, attrs) => h('div', { class: 'pair' },
+      h('label', { for: id, text: label }),
+      h('input', Object.assign({ id, type: 'number' }, attrs)));
 
-    out.push(h('section', { class: 'card form' },
+    const form = h('section', { class: 'card form' },
       h('div', { class: 'field' },
         h('label', { for: 'bank', text: t('bank') }),
         h('select', { id: 'bank', onchange: (e) => { ui.bankId = e.target.value; resetForm(); render(); } },
           [...banks.values()].map((b) => h('option', { value: b.id, selected: b.id === ui.bankId, text: b.title }))),
-        h('p', { class: 'muted', text: [bank.description, t('bankInfo', { n: bank.questions.length, d: bank.domains.length })].filter(Boolean).join('. ') })),
+        h('p', { class: 'hint', text: [bank.description, t('bankInfo', { n: bank.questions.length, d: bank.domains.length })].filter(Boolean).join('. ') }),
+        h('p', { class: 'hint', text: t('bankHelp') })),
 
       h('fieldset', { class: 'field' }, h('legend', { text: t('mode') }),
         radio('study', t('modeStudy')), radio('exam', t('modeExam'))),
@@ -316,22 +327,13 @@
             h('span', { text: d.name + ' (' + n + ')' }));
         })),
 
-      h('div', { class: 'field inline' },
-        h('label', { for: 'count', text: t('count') }),
-        h('input', { id: 'count', type: 'number', min: 1, max: bank.questions.length, value: f.count, oninput: (e) => { f.count = e.target.value; } })),
+      h('fieldset', { class: 'field' }, h('legend', { text: t('options') }),
+        pair('count', t('count'), { min: 1, max: bank.questions.length, value: f.count, oninput: (e) => { f.count = e.target.value; } }),
+        f.mode === 'exam' ? pair('minutes', t('timeLimit'), { min: 0, max: 600, value: f.minutes, oninput: (e) => { f.minutes = e.target.value; } }) : null,
+        check('shuffleQ', t('shuffleQ')),
+        check('shuffleO', t('shuffleO'))),
 
-      f.mode === 'exam' ? h('div', { class: 'field inline' },
-        h('label', { for: 'minutes', text: t('timeLimit') }),
-        h('input', { id: 'minutes', type: 'number', min: 0, max: 600, value: f.minutes, oninput: (e) => { f.minutes = e.target.value; } })) : null,
-
-      h('label', { class: 'check' },
-        h('input', { type: 'checkbox', checked: f.shuffleQ, onchange: (e) => { f.shuffleQ = e.target.checked; } }),
-        h('span', { text: t('shuffleQ') })),
-      h('label', { class: 'check' },
-        h('input', { type: 'checkbox', checked: f.shuffleO, onchange: (e) => { f.shuffleO = e.target.checked; } }),
-        h('span', { text: t('shuffleO') })),
-
-      h('div', { class: 'row' }, btn(t('start'), () => {
+      h('div', { class: 'actions' }, btn(t('start'), () => {
         const count = parseInt(f.count, 10);
         startSession({
           mode: f.mode,
@@ -341,8 +343,9 @@
           shuffleOptions: f.shuffleO,
           minutes: Math.max(0, parseInt(f.minutes, 10) || 0)
         });
-      }, 'primary'))));
-    return out;
+      }, 'primary')));
+
+    return [h('div', { class: 'setup' }, sideEl, form)];
   }
 
   function renderQuiz() {

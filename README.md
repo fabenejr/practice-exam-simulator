@@ -1,7 +1,7 @@
 # Practice Exam Simulator
 
 A small, offline, dependency-free web app for practicing multiple-choice exams.
-Bring your own question bank (a JSON file) and study with instant feedback or take it as a timed exam.
+Bring your own question set (a JSON file with questions, answers and explanations, also called a question bank) and study with instant feedback or take it as a timed exam.
 
 > Unofficial study tool. It is not affiliated with, endorsed by, or sponsored by Anthropic or any certification body.
 > The bundled sample questions are original and are **not** real exam content.

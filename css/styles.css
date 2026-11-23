@@ -49,6 +49,8 @@ h3{font-size:1.15rem;font-weight:600;color:var(--print);margin:26px 0 8px}
 .sr{position:absolute;width:1px;height:1px;margin:-1px;padding:0;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0}
 .skip{position:absolute;left:-999px;top:0;background:var(--graphite);color:var(--sheet);padding:8px 12px;z-index:10}
 .skip:focus{left:8px;top:8px}
+/* long words, URLs and code-like tokens must wrap instead of widening the page */
+.qtext,.otext,.expl,.hint,.lede,.notice,.brand .muted,.rev>summary,.feedback,.resume p,.dom span{overflow-wrap:anywhere}
 :focus-visible{outline:3px solid var(--print);outline-offset:3px}
 
 /* ---------- frame ---------- */
@@ -92,34 +94,49 @@ input[type=number]{width:110px}
 .notice ul{margin:6px 0 0;padding-left:20px;font-size:.9rem}
 
 /* ---------- setup: cover and candidate sheet ---------- */
-.cover{padding:44px 0 22px;max-width:720px}
+.setup{display:grid;grid-template-columns:minmax(0,5fr) minmax(0,7fr);gap:24px 56px;align-items:start}
+.setup-side,.form{min-width:0}
+@media (min-width:901px){.setup-side{position:sticky;top:16px}}
+@media (max-width:900px){.setup{grid-template-columns:minmax(0,1fr);gap:8px}}
+.cover{padding:44px 0 22px}
+@media (max-width:900px){.cover{padding:24px 0 10px}}
 .cover h2{font-size:clamp(2.2rem,6vw,3.6rem);font-weight:300;line-height:1.02;letter-spacing:-.01em}
 .lede{font-family:var(--font-read);font-size:1.1rem;line-height:1.6;color:var(--graphite-soft);max-width:52ch;margin-top:14px}
-.import,.resume,.form{max-width:720px}
 .import{display:flex;flex-wrap:wrap;gap:12px;align-items:center;margin:0 0 16px}
 .import input:focus-visible + label{outline:3px solid var(--print);outline-offset:3px}
 .resume{border-left:4px solid var(--hi)}
 .resume h3{margin-top:0}
 .form{padding:0}
-.field{margin:0;padding:18px 24px;border:0;border-bottom:1px solid var(--rule)}
+.field{min-width:0;margin:0;padding:18px 24px;border:0;border-bottom:1px solid var(--rule)}
+.field select{width:100%;max-width:100%;text-overflow:ellipsis}
+.hint{font-size:.88rem;color:var(--graphite-soft);margin-top:8px;max-width:60ch}
+.pair{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:12px;align-items:center;margin:0 0 12px}
+.pair input{width:96px}
+.actions{padding:18px 24px 22px}
+.actions .btn{width:100%;padding:12px 16px;font-size:1rem}
 .field:last-of-type{border-bottom:0}
 .field legend,.field>label:not(.check){display:block;font:600 .95rem var(--font-form);letter-spacing:.03em;color:var(--print);margin-bottom:8px;padding:0}
 .field legend{float:left;width:100%}
 .field legend + *{clear:both}
 .field.inline{display:flex;flex-wrap:wrap;gap:12px;align-items:center}
 .field.inline>label:not(.check){margin:0}
-.form>.check{padding:0 24px}
-.form>.row{padding:18px 24px 22px;margin:0;border-top:1px solid var(--rule)}
 
 /* ---------- quiz ---------- */
 .bar{display:flex;flex-wrap:wrap;gap:14px;align-items:center;margin:18px 0 10px}
 .bar>:first-child{margin-right:auto;color:var(--graphite-soft)}
 .timer{font:500 1.35rem var(--font-form);font-variant-numeric:tabular-nums}
+@media (max-width:520px){
+  .bar{gap:10px}
+  .bar>:first-child{flex-basis:100%}
+  .timer{margin-right:auto}
+}
 .progress{height:3px;background:var(--rule);margin-bottom:18px}
 .progress>div{height:100%;background:var(--graphite);transition:width .2s}
-.quiz{display:grid;grid-template-columns:196px minmax(0,1fr);gap:20px;align-items:start}
+.quiz{display:grid;grid-template-columns:220px minmax(0,1fr);gap:20px;align-items:start}
+.quiz>*{min-width:0}
+@media (min-width:821px){.quiz>aside{position:sticky;top:12px;max-height:calc(100vh - 24px);overflow:auto}}
 .quiz>aside.card{padding:16px}
-.qnav{display:grid;grid-template-columns:repeat(5,30px);gap:9px}
+.qnav{display:grid;grid-template-columns:repeat(auto-fill,minmax(30px,1fr));gap:9px 8px;justify-items:center}
 .qbtn{width:30px;height:30px;padding:0;border-radius:50%;border:1.5px solid var(--print);background:transparent;color:var(--print);font:600 .72rem var(--font-form);cursor:pointer}
 .qbtn.answered{background:var(--graphite);border-color:var(--graphite);color:var(--sheet)}
 .qbtn.ok{background:var(--tick);border-color:var(--tick);color:#fff}
@@ -127,7 +144,7 @@ input[type=number]{width:110px}
 .qbtn.marked{box-shadow:0 0 0 3px var(--hi)}
 .qbtn.current{outline:2px solid var(--graphite);outline-offset:3px}
 @media (max-width:820px){
-  .quiz{grid-template-columns:1fr;gap:14px}
+  .quiz{grid-template-columns:minmax(0,1fr);gap:14px}
   .qnav{display:flex;overflow-x:auto;padding:4px 4px 8px;gap:9px}
   .qbtn{flex:none}
 }
