@@ -15,3 +15,6 @@ estudo_desktop_cli_sdk.html
 .DS_Store
 Thumbs.db
 *.log
+
+# Private question sets (third-party content, not for the public repo)
+/private-banks/
