@@ -6,7 +6,7 @@ Bring your own question bank (a JSON file) and study with instant feedback or ta
 > Unofficial study tool. It is not affiliated with, endorsed by, or sponsored by Anthropic or any certification body.
 > The bundled sample questions are original and are **not** real exam content.
 
-**[Português (BR)](#português-br)**
+**[Open the live demo](https://fabenejr.github.io/practice-exam-simulator/)** · **[Português (BR)](#português-br)**
 
 ## Features
 
@@ -119,7 +119,7 @@ Traga seu banco de questões (arquivo JSON) e estude com gabarito imediato ou fa
 > Ferramenta de estudo não oficial, sem vínculo com a Anthropic nem com qualquer certificadora.
 > As questões de exemplo são originais e **não** são conteúdo de prova real.
 
-**Como usar:** baixe o repositório e abra o `index.html` no navegador. Use **Importar banco** (ou arraste um `.json`)
+**Como usar:** abra o [site online](https://fabenejr.github.io/practice-exam-simulator/) ou baixe o repositório e abra o `index.html` no navegador. Use **Importar banco** (ou arraste um `.json`)
 para carregar o seu banco. O formato está descrito acima e no schema em `schema/`.
 
 **Modos:** *Estudo* mostra o gabarito e a explicação logo após responder; *Prova* só revela no final, com cronômetro opcional.
