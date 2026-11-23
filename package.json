@@ -1,7 +1,7 @@
 {
   "name": "practice-exam-simulator",
   "version": "1.0.0",
-  "description": "Offline, dependency-free practice exam simulator. Bring your own question bank.",
+  "description": "Offline practice exam simulator. Bring your own question bank.",
   "private": true,
   "license": "MIT",
   "engines": { "node": ">=18" },

@@ -1,6 +1,6 @@
 # Practice Exam Simulator
 
-A small, offline, dependency-free web app for practicing multiple-choice exams.
+A small, offline web app (no build step; styled with a bundled copy of Bootstrap 5 CSS) for practicing multiple-choice exams.
 Bring your own question set (a JSON file with questions, answers and explanations, also called a question bank) and study with instant feedback or take it as a timed exam.
 
 > Unofficial study tool. It is not affiliated with, endorsed by, or sponsored by Anthropic or any certification body.
@@ -22,7 +22,7 @@ Bring your own question set (a JSON file with questions, answers and explanation
 
 ## Quick start
 
-No build step and no dependencies.
+No build step and nothing to install. Bootstrap 5.3 CSS (MIT) is bundled in `vendor/bootstrap`.
 
 1. Download or clone this repository.
 2. Open `index.html` in a browser (double-click works).

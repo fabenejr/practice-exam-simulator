@@ -76,6 +76,10 @@
       statusOk: 'correct',
       statusBad: 'wrong',
       statusBlank: 'unanswered',
+      legendAnswered: 'Answered',
+      answerKey: 'Answer key',
+      target: 'target',
+      summaryLine: '{answered} answered · {blank} blank · about {min} min',
       disclaimer: 'Unofficial study tool, not affiliated with Anthropic. Everything runs in your browser; nothing is sent anywhere.'
     },
     'pt-BR': {
@@ -151,6 +155,10 @@
       statusOk: 'certa',
       statusBad: 'errada',
       statusBlank: 'em branco',
+      legendAnswered: 'Respondida',
+      answerKey: 'Gabarito',
+      target: 'meta',
+      summaryLine: '{answered} respondidas · {blank} em branco · cerca de {min} min',
       disclaimer: 'Ferramenta de estudo não oficial, sem vínculo com a Anthropic. Tudo roda no seu navegador; nada é enviado para fora.'
     }
   };
