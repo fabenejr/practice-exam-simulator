@@ -81,7 +81,7 @@ node scripts/validate-bank.mjs path/to/my-bank.json
 
 ### Importing and bundling
 
-- **Import**: use the *Import bank* button (or drop the file on the page). Imported banks live only in the current page.
+- **Import**: use the *Import bank* button (or drop the file on the page). Imported banks are kept in your browser.
 - **Bundle with the app**: put a bank in `data/` as a `.js` file that follows [`data/sample-bank.js`](data/sample-bank.js)
   and add a `<script>` tag for it in `index.html`.
 
@@ -102,12 +102,19 @@ Text from banks is rendered with `textContent` only, never as HTML, so imported 
 ## About question content
 
 Only share questions you wrote or have permission to share. Do not publish real exam questions: certification
-exams are usually confidential and protected by an agreement. Keep third-party material out of the repository;
-`private/` and `*.private.json` are git-ignored for that reason.
+exams are usually confidential and protected by an agreement. Keep other third-party material out of the repository;
+`private/`, `private-banks/` and `*.private.json` are git-ignored for that reason.
+
+### Credits
+
+- [`data/ccdv-f-practice.js`](data/ccdv-f-practice.js): the 53-question *Claude Certified Developer - Foundations*
+  practice set written by **Matthew Purcell** ([LinkedIn](https://www.linkedin.com/in/purcellmatthew)),
+  bundled with his permission. Copyright remains with the author.
+- [`data/sample-bank.js`](data/sample-bank.js): original sample questions by the project contributors.
 
 ## License
 
-[MIT](LICENSE) for the code and the bundled sample bank.
+[MIT](LICENSE) for the code and the bundled sample bank. The Matthew Purcell practice set is © its author and is not covered by the MIT license (see Credits).
 
 ---
 
